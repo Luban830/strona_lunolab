@@ -1,0 +1,167 @@
+'use client'
+
+import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { usePathname } from 'next/navigation'
+
+export default function Navbar() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const pathname = usePathname()
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20)
+    }
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const navLinks = [
+    { href: '/#uslugi', label: 'Usługi' },
+    { href: '/#case-studies', label: 'Projekty' },
+    { href: '/#video', label: 'O nas' },
+    { href: '/projekty', label: 'Wszystkie projekty' },
+  ]
+
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    setIsMobileMenuOpen(false)
+    
+    // Smooth scroll for anchor links
+    if (href.startsWith('/#')) {
+      e.preventDefault()
+      const targetId = href.replace('/#', '')
+      const element = document.getElementById(targetId)
+      
+      if (element) {
+        const offset = 80 // Navbar height
+        const elementPosition = element.getBoundingClientRect().top
+        const offsetPosition = elementPosition + window.pageYOffset - offset
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        })
+      } else if (href === '/#') {
+        // Scroll to top
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        })
+      }
+    }
+  }
+
+  return (
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-[#151716]/95 backdrop-blur-md border-b border-[#27F579]/20'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-20">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex-shrink-0 hover:opacity-80 transition-opacity"
+            onClick={(e) => {
+              if (pathname === '/') {
+                e.preventDefault()
+                window.scrollTo({ top: 0, behavior: 'smooth' })
+              }
+            }}
+          >
+            <Image
+              src="/logo_lunolab.png"
+              alt="Lunolab"
+              width={180}
+              height={60}
+              className="h-12 w-auto"
+              priority
+            />
+          </Link>
+
+          {/* Desktop Navigation - Centered */}
+          <div className="hidden md:flex items-center justify-center absolute left-1/2 transform -translate-x-1/2 space-x-8">
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href.replace('/#', '/') ||
+                (link.href.startsWith('/#') && pathname === '/')
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => handleLinkClick(e, link.href)}
+                  className={`text-sm font-medium transition-colors ${
+                    isActive
+                      ? 'text-[#27F579]'
+                      : 'text-gray-300 hover:text-[#27F579]'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              )
+            })}
+          </div>
+
+          {/* Spacer for centering on desktop - same width as logo */}
+          <div className="hidden md:block flex-shrink-0 text-2xl font-bold w-[120px]"></div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden text-gray-300 hover:text-[#27F579] transition-colors flex-shrink-0"
+            aria-label="Toggle menu"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              {isMobileMenuOpen ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path d="M4 6h16M4 12h16M4 18h16" />
+              )}
+            </svg>
+          </button>
+        </div>
+
+        {/* Mobile Navigation */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden pb-4 border-t border-[#27F579]/20 mt-4 pt-4">
+            <div className="flex flex-col space-y-4">
+              {navLinks.map((link) => {
+                const isActive =
+                  pathname === link.href.replace('/#', '/') ||
+                  (link.href.startsWith('/#') && pathname === '/')
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={(e) => handleLinkClick(e, link.href)}
+                    className={`text-base font-medium transition-colors ${
+                      isActive
+                        ? 'text-[#27F579]'
+                        : 'text-gray-300 hover:text-[#27F579]'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  )
+}
+

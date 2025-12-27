@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Lunolab - Strona Internetowa
 
-## Getting Started
+Strona internetowa firmy Lunolab zajmującej się automatyzacjami procesów w AI.
 
-First, run the development server:
+## Technologie
 
+- Next.js 14 (App Router)
+- TypeScript
+- Tailwind CSS
+- Supabase (baza danych)
+- Framer Motion (animacje)
+
+## Instalacja
+
+1. Zainstaluj zależności:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Skonfiguruj Supabase:
+   - Utwórz plik `.env.local` na podstawie `.env.local.example`
+   - Wypełnij `NEXT_PUBLIC_SUPABASE_URL` i `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Utwórz tabelę `projects` w Supabase:
+   - Otwórz SQL Editor w Supabase Dashboard
+   - Uruchom skrypt z pliku `supabase-setup.sql` (lub skopiuj kod SQL poniżej):
+```sql
+CREATE TABLE IF NOT EXISTS projects (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT NOT NULL,
+  description TEXT NOT NULL,
+  image_url TEXT,
+  client_name TEXT NOT NULL,
+  category TEXT NOT NULL,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Uruchom serwer deweloperski:
+```bash
+npm run dev
+```
 
-## Learn More
+Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
 
-To learn more about Next.js, take a look at the following resources:
+## Struktura projektu
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `/app` - Strony Next.js
+- `/components` - Komponenty React
+- `/lib` - Narzędzia i konfiguracja (Supabase)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Sekcje strony
 
-## Deploy on Vercel
+1. **Hero** - Główne hasło i statystyki
+2. **Usługi** - Lista usług firmy
+3. **Case Studies** - Karuzela z projektami
+4. **Video** - Sekcja z filmem o firmie
+5. **Stopka** - Informacje kontaktowe
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Podstrona projektów
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Podstrona `/projekty` zawiera pełną listę wszystkich projektów z bazy danych.
