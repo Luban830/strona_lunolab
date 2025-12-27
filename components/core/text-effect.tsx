@@ -28,9 +28,9 @@ const presets = {
   }
 }
 
-export function TextEffect({ 
-  children, 
-  per = 'char', 
+export function TextEffect({
+  children,
+  per = 'char',
   preset = 'fade',
   className = ''
 }: TextEffectProps) {
@@ -42,7 +42,7 @@ export function TextEffect({
     const textWithoutSpaces = children.replace(/\s/g, '')
     const isLastTwoAI = textWithoutSpaces.slice(-2) === 'AI'
     let nonSpaceIndex = 0
-    
+
     return (
       <span className={className}>
         {chars.map((char, index) => {
@@ -52,7 +52,7 @@ export function TextEffect({
           }
           // Sprawdź czy to ostatnie 2 znaki (ignorując spacje) i są to "AI"
           const isPartOfAI = isLastTwoAI && nonSpaceIndex > textWithoutSpaces.length - 2 && !isSpace
-          
+
           return (
             <motion.span
               key={index}
@@ -63,7 +63,7 @@ export function TextEffect({
                 delay: index * delayStep,
               }}
               style={{ display: 'inline-block' }}
-              className={isPartOfAI ? 'text-[#27F579] neon-glow' : ''}
+              className={isPartOfAI ? 'text-[#27F579] neon-glow-subtle' : ''}
             >
               {char === ' ' ? '\u00A0' : char}
             </motion.span>
@@ -73,7 +73,7 @@ export function TextEffect({
     )
   } else {
     const words = children.split(' ')
-    
+
     return (
       <span className={className}>
         {words.map((word, index) => (

@@ -45,6 +45,11 @@ body {
   text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), 0 0 30px var(--neon-green);
 }
 
+/* Subtle neon glow effect */
+.neon-glow-subtle {
+  text-shadow: 0 0 4px rgba(39, 245, 121, 0.5), 0 0 8px rgba(39, 245, 121, 0.3);
+}
+
 .neon-border {
   box-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green), inset 0 0 10px var(--neon-green);
 }
@@ -58,7 +63,7 @@ body {
   z-index: 0;
   --c: #27F579;
   background-color: #000;
-  background-image: 
+  background-image:
     radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
     radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
     radial-gradient(1.5px 1.5px at 150px 117.5px, var(--c) 100%, #0000 150%),
@@ -275,3 +280,4 @@ body {
       426.5px 6480px;
   }
 }
+
