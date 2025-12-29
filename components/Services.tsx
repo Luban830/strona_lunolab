@@ -107,7 +107,7 @@ export default function Services() {
               className="group visible cursor-pointer"
             >
               <div
-                className="relative transform overflow-hidden rounded-2xl p-6 shadow-lg transition-all duration-300 group-hover:scale-105 hover:shadow-[0_0_30px_rgba(39,245,121,0.3)]"
+                className="relative transform overflow-hidden rounded-2xl p-6 shadow-lg"
                 style={{
                   background: `linear-gradient(rgba(39, 245, 121, 0.25), rgba(21, 23, 22, 0.75)), url(${service.image})`,
                   backgroundSize: 'cover',
@@ -213,7 +213,7 @@ export default function Services() {
                 >
                   <button
                     onClick={() => setOpenModal('long-term')}
-                    className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-100 active:scale-95 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_1px_2px_0px_rgba(0,0,0,0.4)]"
+                    className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-110 hover:brightness-110 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_16px_0px_rgba(39,245,121,0.5)]"
                   >
                     Szczegóły &rarr;
                   </button>
@@ -272,7 +272,7 @@ export default function Services() {
                 >
                   <button
                     onClick={() => setOpenModal('one-time')}
-                    className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-100 active:scale-95 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_1px_2px_0px_rgba(0,0,0,0.4)]"
+                    className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-110 hover:brightness-110 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_16px_0px_rgba(39,245,121,0.5)]"
                   >
                     Szczegóły &rarr;
                   </button>

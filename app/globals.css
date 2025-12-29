@@ -6,12 +6,51 @@
   --foreground: #ededed;
   --neon-green: #27F579;
   --neon-green-dark: #27F579;
+  --font-zalando: "Zalando Sans Expanded", sans-serif;
+  --font-montserrat: "Montserrat", sans-serif;
+  --sky-500: #0ea5e9;
+  
+  /* shadcn variables */
+  --card: #1e1f1e;
+  --card-foreground: #ededed;
+  --popover: #1e1f1e;
+  --popover-foreground: #ededed;
+  --primary: #27F579;
+  --primary-foreground: #151716;
+  --secondary: #2a2b2a;
+  --secondary-foreground: #ededed;
+  --muted: #2a2b2a;
+  --muted-foreground: #a1a1a1;
+  --accent: #27F579;
+  --accent-foreground: #151716;
+  --destructive: #ef4444;
+  --destructive-foreground: #ededed;
+  --border: #3a3b3a;
+  --input: #3a3b3a;
+  --ring: #27F579;
+  --radius: 0.5rem;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-montserrat);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --font-sans: var(--font-zalando), var(--font-montserrat), sans-serif;
+  --radius: var(--radius);
 }
 
 html {
@@ -21,15 +60,40 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-montserrat), "Montserrat", Arial, Helvetica, sans-serif;
+  font-family: var(--font-zalando), var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 @theme {
   --animate-border: border 4s linear infinite;
+  --animate-marquee: marquee 15s linear infinite;
 
   @keyframes border {
     to { --border-angle: 360deg; }
   }
+
+  @keyframes background-position-spin {
+    0% { background-position: top center; }
+    100% { background-position: bottom center; }
+  }
+
+  @keyframes autoplay-progress {
+    0% { transform: translate3d(-100%, 0, 0); }
+    100% { transform: translate3d(0, 0, 0); }
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  --animate-background-position-spin: background-position-spin 3000ms infinite alternate;
+}
+
+/* GPU acceleration for animations */
+.gpu-accelerate {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 @supports (property(--border-angle)) {

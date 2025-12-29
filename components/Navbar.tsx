@@ -107,8 +107,15 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Spacer for centering on desktop - same width as logo */}
-          <div className="hidden md:block flex-shrink-0 text-2xl font-bold w-[120px]"></div>
+          {/* Desktop CTA Button */}
+          <div className="hidden md:flex items-center flex-shrink-0">
+            <Link
+              href="/umow-spotkanie"
+              className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold text-sm shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-105 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_12px_0px_rgba(39,245,121,0.4)] hover:brightness-110"
+            >
+              Umów spotkanie
+            </Link>
+          </div>
 
           {/* Mobile menu button */}
           <button
@@ -157,6 +164,13 @@ export default function Navbar() {
                   </Link>
                 )
               })}
+              <Link
+                href="/umow-spotkanie"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold text-center mt-2 shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95"
+              >
+                Umów spotkanie
+              </Link>
             </div>
           </div>
         )}
