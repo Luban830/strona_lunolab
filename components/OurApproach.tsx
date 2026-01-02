@@ -14,16 +14,13 @@ export default function OurApproach() {
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
             <div className="relative w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[650px] aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
               <Image
-                src="/15-DSCF8700.jpg"
+                src="/DSCF8700.jpg"
                 alt="Nasze podejście do współpracy z klientami - Lunolab automatyzacja AI"
                 fill
                 className="object-cover"
-                loading="lazy"
                 unoptimized
+                priority
               />
-              {/* Green gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#27F579]/20 via-transparent to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0b0a]/40"></div>
             </div>
           </div>
 

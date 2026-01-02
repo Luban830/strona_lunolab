@@ -313,12 +313,13 @@ export default function Services() {
                 <div className="relative flex justify-center items-center">
                   <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                     <Image
-                      src="/1.jpg"
+                      src="/15-DSCF8700.jpg"
                       alt="Współpraca z Lunolab - automatyzacja procesów biznesowych z wykorzystaniem AI"
                       width={800}
                       height={600}
                       className="w-full h-full object-cover hover:scale-105 transition-all duration-300"
                       loading="lazy"
+                      unoptimized
                     />
                   </div>
                 </div>

@@ -60,7 +60,7 @@ export default function Hero() {
 
               <Link href="/projekty" className="w-full sm:w-auto">
                 <button className="group w-full sm:w-auto flex items-center justify-center gap-3 bg-white/5 text-white font-semibold px-6 sm:px-7 py-3 sm:py-4 rounded-full border border-white/20 hover:border-[#27F579]/50 hover:bg-[#27F579]/10 transition-all duration-300" aria-label="Zobacz wszystkie projekty automatyzacji AI">
-                  Zobacz projekty
+                  Zobacz nasze projekty
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               </Link>

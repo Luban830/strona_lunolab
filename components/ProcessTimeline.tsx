@@ -59,6 +59,11 @@ function Timeline({ steps, title }: { steps: typeof longTermSteps; title: string
   useEffect(() => {
     if (!timelineRef.current) return
 
+    // Start impulse animation immediately
+    const startTimer = setTimeout(() => {
+      startImpulseAnimation()
+    }, 500) // Small delay to ensure DOM is ready
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -99,11 +104,6 @@ function Timeline({ steps, title }: { steps: typeof longTermSteps; title: string
               }
             })
 
-            // Start impulse animation after initial animations
-            setTimeout(() => {
-              startImpulseAnimation()
-            }, 2000)
-
             observer.unobserve(entry.target)
           }
         })
@@ -114,6 +114,7 @@ function Timeline({ steps, title }: { steps: typeof longTermSteps; title: string
     observer.observe(timelineRef.current)
 
     return () => {
+      clearTimeout(startTimer)
       observer.disconnect()
       if (animationRef.current) {
         animationRef.current.kill()
