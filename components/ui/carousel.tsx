@@ -61,7 +61,7 @@ const Carousel: React.FC<PropType> = (props) => {
               >
                 <div
                   style={{ 
-                    opacity: index === selectedIndex ? 1 : 0.35,
+                    opacity: index === selectedIndex ? 1 : 0.7,
                     transform: index === selectedIndex ? 'scale(1)' : 'scale(0.95)',
                     transition: 'opacity 0.4s ease, transform 0.4s ease',
                     pointerEvents: index === selectedIndex ? 'auto' : 'none',

@@ -80,7 +80,7 @@ function MarqueeGallery({ images }: { images: string[] }) {
   const duplicatedImages = [...images, ...images, ...images]
 
   return (
-    <div className="relative w-full overflow-hidden rounded-xl">
+    <div className="relative w-full overflow-hidden">
       <style jsx>{`
         @keyframes marquee-scroll {
           0% {
@@ -99,12 +99,12 @@ function MarqueeGallery({ images }: { images: string[] }) {
       `}</style>
       <div 
         className="marquee-track flex"
-        style={{ width: 'max-content', gap: '12px' }}
+        style={{ width: 'max-content', gap: '2px' }}
       >
         {duplicatedImages.map((image, index) => (
           <div
             key={index}
-            className="flex-shrink-0 rounded-lg sm:rounded-xl overflow-hidden shadow-lg"
+            className="flex-shrink-0 overflow-hidden"
             style={{ width: 'clamp(160px, 30vw, 220px)', aspectRatio: '16/10' }}
           >
             <img
@@ -145,11 +145,11 @@ function ProjectCard({ project }: { project: typeof projects[0] }) {
       </div>
 
       {/* Dolna sekcja z galerią */}
-      <div className="bg-[#0a1a10] p-3 sm:p-4 md:p-5 flex-1 flex flex-col border-b border-l border-r border-[#27F579]/20 rounded-b-xl sm:rounded-b-2xl">
+      <div className="bg-[#0a1a10] flex-1 flex flex-col border-b border-l border-r border-[#27F579]/20 rounded-b-xl sm:rounded-b-2xl">
         <MarqueeGallery images={project.images} />
 
         {/* CTA */}
-        <div className="mt-4 sm:mt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <div className="p-3 sm:p-4 md:p-5 pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <span className="text-white/60 text-xs sm:text-sm hidden sm:block">
             Zobacz jak możemy Ci pomóc →
           </span>

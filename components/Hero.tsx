@@ -28,7 +28,7 @@ export default function Hero() {
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-white mb-6">
                 Automatyzacja
               </h1>
-              <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 mb-6 overflow-visible">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start lg:items-start gap-3 sm:gap-4 mb-6 overflow-visible">
                 <LayoutTextFlip
                   text=""
                   words={[
