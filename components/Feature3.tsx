@@ -30,7 +30,7 @@ type FeatureItem = {
 const leftFeatures: FeatureItem[] = [
   {
     icon: Brain,
-    title: 'Audyt AI',
+    title: 'Audyt',
     description:
       'Określamy potrzeby firmy i definiujemy ścieżkę wdrożenia AI. Analizujemy obecne procesy i identyfikujemy możliwości automatyzacji.',
     position: 'left',
