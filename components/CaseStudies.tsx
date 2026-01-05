@@ -5,74 +5,29 @@ import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Carousel } from '@/components/ui/carousel'
 
-// Hardkodowane projekty portfolio z rozszerzoną strukturą
-const projects = [
-  {
-    id: 1,
-    client: "Hospitadent",
-    metric: "88+",
-    metricLabel: "nowych rezerwacji pacjentów w miesiąc",
-    description: "Automatyczne odpowiedzi 24/7 zwiększyły satysfakcję klientów i napędziły stały wzrost rezerwacji miesiąc do miesiąca.",
-    images: [
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-    ],
-    category: "AI Chatbot",
-  },
-  {
-    id: 2,
-    client: "TechCorp",
-    metric: "250K+",
-    metricLabel: "PLN zaoszczędzonych rocznie",
-    description: "Automatyzacja procesów HR pozwoliła zredukować koszty operacyjne i przyspieszyć onboarding nowych pracowników.",
-    images: [
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-    ],
-    category: "Automatyzacja",
-  },
-  {
-    id: 3,
-    client: "E-Shop Pro",
-    metric: "95%",
-    metricLabel: "redukcja czasu odpowiedzi",
-    description: "Inteligentny chatbot obsługuje pytania klientów natychmiast, zwiększając konwersję i lojalność klientów.",
-    images: [
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-    ],
-    category: "AI Chatbot",
-  },
-  {
-    id: 4,
-    client: "Marketing Agency",
-    metric: "3x",
-    metricLabel: "szybsze tworzenie treści",
-    description: "AI generuje spersonalizowane treści marketingowe, które zwiększają zaangażowanie i konwersję.",
-    images: [
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    ],
-    category: "Marketing AI",
-  },
-  {
-    id: 5,
-    client: "Legal Partners",
-    metric: "500+",
-    metricLabel: "dokumentów przetworzonych dziennie",
-    description: "OCR i AI automatycznie kategoryzują i analizują dokumenty prawne, oszczędzając godziny pracy prawników.",
-    images: [
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-    ],
-    category: "Automatyzacja",
-  },
-]
+// Typ projektu
+type Project = {
+  id: number
+  client: string
+  metric: string
+  metricLabel: string
+  description: string
+  images: string[]
+  category: string
+}
+
+// Tablica projektów - dodaj tutaj nowe projekty
+// Struktura projektu:
+// {
+//   id: number,
+//   client: string,
+//   metric: string,
+//   metricLabel: string,
+//   description: string,
+//   images: string[],
+//   category: string
+// }
+const projects: Project[] = []
 
 // Mini galeria zdjęć z płynnym ciągłym przewijaniem (marquee)
 function MarqueeGallery({ images }: { images: string[] }) {
@@ -120,7 +75,7 @@ function MarqueeGallery({ images }: { images: string[] }) {
 }
 
 // Pojedynczy kafelek projektu
-function ProjectCard({ project }: { project: typeof projects[0] }) {
+function ProjectCard({ project }: { project: Project }) {
   return (
     <div className="h-full w-full relative overflow-hidden rounded-xl sm:rounded-2xl flex flex-col" style={{ minHeight: 'clamp(480px, 70vh, 580px)' }}>
       {/* Górna sekcja z gradientem zielonym */}
@@ -287,19 +242,21 @@ export default function CaseStudies() {
           </p>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <Carousel
-            options={{ loop: true, align: 'center' }}
-            slides={projects.map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-          />
-        </motion.div>
+        {projects.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            viewport={{ once: true }}
+          >
+            <Carousel
+              options={{ loop: true, align: 'center' }}
+              slides={projects.map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+            />
+          </motion.div>
+        )}
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}

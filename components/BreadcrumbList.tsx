@@ -25,3 +25,4 @@ export default function BreadcrumbList({ items }: BreadcrumbListProps) {
   )
 }
 
+

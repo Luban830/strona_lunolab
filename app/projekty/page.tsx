@@ -4,94 +4,33 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { X } from 'lucide-react'
 
-// Kategorie projektów związane z AI
-const categories = [
-  'Wszystkie',
-  'AI Chatbot',
-  'Automatyzacja',
-  'Machine Learning',
-  'Computer Vision',
-  'NLP',
-]
+// Typ projektu
+type Project = {
+  id: number
+  client: string
+  title: string
+  category: string
+  metric: string
+  metricLabel: string
+  description: string
+  images: string[]
+  details: string
+}
 
-// Projekty z kategoriami i szczegółami
-const projects = [
-  {
-    id: 1,
-    client: "Hospitadent",
-    title: "Hospitadent",
-    category: "AI Chatbot",
-    metric: "88+",
-    metricLabel: "nowych rezerwacji pacjentów w miesiąc",
-    description: "Automatyczne odpowiedzi 24/7 zwiększyły satysfakcję klientów i napędziły stały wzrost rezerwacji miesiąc do miesiąca.",
-    images: [
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-    ],
-    details: "Implementacja zaawansowanego chatbota AI dla kliniki stomatologicznej, który automatycznie odpowiada na pytania pacjentów, umawia wizyty i przypomina o terminach. System wykorzystuje NLP do rozumienia intencji klientów i zapewnia 24/7 wsparcie.",
-  },
-  {
-    id: 2,
-    client: "TechCorp",
-    title: "TechCorp",
-    category: "Automatyzacja",
-    metric: "250K+",
-    metricLabel: "PLN zaoszczędzonych rocznie",
-    description: "Automatyzacja procesów HR pozwoliła zredukować koszty operacyjne i przyspieszyć onboarding nowych pracowników.",
-    images: [
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-    ],
-    details: "Kompleksowa automatyzacja procesów HR z wykorzystaniem AI do analizy CV, automatycznego planowania rozmów kwalifikacyjnych i onboardingu. System zmniejszył czas rekrutacji o 60% i zaoszczędził firmie ponad 250 tysięcy złotych rocznie.",
-  },
-  {
-    id: 3,
-    client: "E-Shop Pro",
-    title: "E-Shop Pro",
-    category: "AI Chatbot",
-    metric: "95%",
-    metricLabel: "redukcja czasu odpowiedzi",
-    description: "Inteligentny chatbot obsługuje pytania klientów natychmiast, zwiększając konwersję i lojalność klientów.",
-    images: [
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-    ],
-    details: "Chatbot AI dla e-commerce, który pomaga klientom w wyborze produktów, odpowiada na pytania o dostępność i parametry techniczne. System zintegrowany z bazą produktów i systemem płatności, obsługuje 95% zapytań bez interwencji człowieka.",
-  },
-  {
-    id: 4,
-    client: "Marketing Agency",
-    title: "Marketing Agency",
-    category: "Machine Learning",
-    metric: "3x",
-    metricLabel: "szybsze tworzenie treści",
-    description: "AI generuje spersonalizowane treści marketingowe, które zwiększają zaangażowanie i konwersję.",
-    images: [
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop",
-    ],
-    details: "System ML do generowania treści marketingowych wykorzystujący modele językowe do tworzenia spersonalizowanych postów, emaili i reklam. Algorytm uczy się z historii kampanii i optymalizuje treści pod kątem konwersji.",
-  },
-  {
-    id: 5,
-    client: "Legal Partners",
-    title: "Legal Partners",
-    category: "NLP",
-    metric: "500+",
-    metricLabel: "dokumentów przetworzonych dziennie",
-    description: "OCR i AI automatycznie kategoryzują i analizują dokumenty prawne, oszczędzając godziny pracy prawników.",
-    images: [
-      "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=600&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1432888622747-4eb9a8efeb07?w=600&h=400&fit=crop",
-    ],
-    details: "System NLP do automatycznej analizy dokumentów prawnych wykorzystujący OCR i przetwarzanie języka naturalnego. System kategoryzuje dokumenty, wyciąga kluczowe informacje i przygotowuje podsumowania, przetwarzając ponad 500 dokumentów dziennie.",
-  },
-]
+// Tablica projektów - dodaj tutaj nowe projekty
+// Struktura projektu:
+// {
+//   id: number,
+//   client: string,
+//   title: string,
+//   category: string,
+//   metric: string,
+//   metricLabel: string,
+//   description: string,
+//   images: string[],
+//   details: string
+// }
+const projects: Project[] = []
 
 // Funkcja do mapowania kategorii na etykiety
 const getCategoryLabel = (category: string) => {
@@ -106,14 +45,9 @@ const getCategoryLabel = (category: string) => {
 }
 
 export default function ProjektyPage() {
-  const [selectedCategory, setSelectedCategory] = useState('Wszystkie')
-  const [selectedProject, setSelectedProject] = useState<typeof projects[0] | null>(null)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
 
-  const filteredProjects = selectedCategory === 'Wszystkie'
-    ? projects
-    : projects.filter(project => project.category === selectedCategory)
-
-  const openProjectDetails = (project: typeof projects[0]) => {
+  const openProjectDetails = (project: Project) => {
     setSelectedProject(project)
   }
 
@@ -164,28 +98,9 @@ export default function ProjektyPage() {
             Case studies
             </h1>
 
-          {/* Filtry */}
-          <div className="flex flex-wrap gap-3 sm:gap-4 mb-8 sm:mb-12">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-sm sm:text-base font-medium transition-all duration-200 ${
-                  selectedCategory === category
-                    ? 'bg-[#27F579] text-[#0a0b0a]'
-                    : 'bg-[#111211] text-white border-2 border-white/20 hover:border-[#27F579]/50'
-                }`}
-                aria-label={`Filtruj projekty według kategorii ${category}`}
-                aria-pressed={selectedCategory === category}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-
           {/* Grid projektów */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {filteredProjects.map((project) => (
+            {projects.map((project) => (
               <div
                 key={project.id}
                 onClick={() => openProjectDetails(project)}
@@ -229,11 +144,11 @@ export default function ProjektyPage() {
             ))}
           </div>
 
-          {/* Jeśli brak projektów w wybranej kategorii */}
-          {filteredProjects.length === 0 && (
+          {/* Jeśli brak projektów */}
+          {projects.length === 0 && (
             <div className="text-center py-12">
               <p className="text-gray-400 text-lg">
-                Brak projektów w kategorii "{selectedCategory}"
+                Brak projektów
               </p>
             </div>
           )}

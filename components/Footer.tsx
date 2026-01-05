@@ -17,7 +17,7 @@ export default function Footer() {
             <h4 className="text-lg font-semibold mb-4">Kontakt</h4>
             <ul className="space-y-2 text-gray-400">
               <li>Email: kontakt@lunolab.pl</li>
-              <li>Telefon: +48 XXX XXX XXX</li>
+              <li>Telefon: +48 538 522 778</li>
             </ul>
           </div>
 
