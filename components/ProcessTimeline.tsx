@@ -127,100 +127,176 @@ function Timeline({ steps, title }: { steps: typeof longTermSteps; title: string
 
     // Wait for layout to stabilize
     setTimeout(() => {
-      // Calculate positions of each step relative to timeline container
-      const stepPositions: number[] = []
-      stepsRef.current.forEach((step) => {
-        if (step && timelineRef.current) {
-          // Get the dot element position
-          const dotElement = step.querySelector('.step-dot-container')
-          if (dotElement) {
-            const dotRect = dotElement.getBoundingClientRect()
+      // Use requestAnimationFrame to ensure layout is fully rendered
+      requestAnimationFrame(() => {
+        // Double RAF to ensure all layouts are fully calculated
+        requestAnimationFrame(() => {
+          // Triple RAF for extra safety with dynamic content
+          requestAnimationFrame(() => {
+            // Quadruple RAF to ensure all steps are fully rendered
+            requestAnimationFrame(() => {
+            // Calculate positions of each step relative to timeline container
+            const stepPositions: number[] = []
+
+            if (!timelineRef.current || !impulseRef.current) return
+
+            // Calculate positions using getBoundingClientRect for accurate positioning
+            // Ensure all positions are calculated relative to the same timeline container
+            const positions: Array<{ index: number; y: number }> = []
+
+            // Force a layout recalculation to ensure all elements are positioned
+            void timelineRef.current.offsetHeight
+
+            // Get timeline container position once - critical for consistency
+            // Recalculate after forcing layout to ensure accuracy
             const timelineRect = timelineRef.current.getBoundingClientRect()
-            const relativeY = dotRect.top + dotRect.height / 2 - timelineRect.top
-            stepPositions.push(relativeY)
-          }
-        }
-      })
+            const timelineTop = timelineRect.top
 
-      if (stepPositions.length === 0) return
+            stepsRef.current.forEach((step, stepIndex) => {
+              if (step && timelineRef.current) {
+                // Get the actual dot element (the pulsating green dot)
+                const dotElement = step.querySelector('.step-dot') as HTMLElement
 
-      const startY = stepPositions[0]
+                if (dotElement) {
+                  // Force layout recalculation for this specific element
+                  void dotElement.offsetHeight
 
-      // Create timeline animation
-      const tl = gsap.timeline({ repeat: -1 })
+                  // Get dot position - use the same timeline reference for all calculations
+                  const dotRect = dotElement.getBoundingClientRect()
 
-      // Reset to start
-      gsap.set(impulseRef.current, {
-        y: startY - 16, // Center impulse on dot (impulse height is 32px, so -16 to center)
-        opacity: 1
-      })
+                  // Recalculate timeline position to ensure consistency
+                  const currentTimelineRect = timelineRef.current.getBoundingClientRect()
 
-      // Animate through each step
-      stepPositions.forEach((y, index) => {
-        const targetY = y - 16 // Center on dot
+                  // Calculate relative Y: dot center relative to timeline top
+                  // Always use the same reference point (current timeline top) for consistency
+                  const relativeY = dotRect.top - currentTimelineRect.top + (dotRect.height / 2)
 
-        if (index === 0) {
-          // Start at first step
-          tl.to(impulseRef.current, {
-            y: targetY,
-            duration: 0.3,
-            ease: 'power2.out',
+                  positions.push({ index: stepIndex, y: relativeY })
+                }
+              }
+            })
+
+            // Sort by index to ensure correct order
+            positions.sort((a, b) => a.index - b.index)
+
+            // Extract just the Y positions in order
+            positions.forEach(({ y }) => {
+              stepPositions.push(y)
+            })
+
+            if (stepPositions.length === 0) return
+
+            // Verify all positions are valid numbers
+            const validPositions = stepPositions.filter(pos => !isNaN(pos) && isFinite(pos))
+            if (validPositions.length !== stepPositions.length) {
+              console.warn('Some step positions are invalid:', stepPositions)
+              return
+            }
+
+            // Ensure positions are in ascending order (they should be)
+            for (let i = 1; i < stepPositions.length; i++) {
+              if (stepPositions[i] < stepPositions[i - 1]) {
+                console.warn('Step positions are not in ascending order:', stepPositions)
+                // Sort them to fix the order
+                stepPositions.sort((a, b) => a - b)
+                break
+              }
+            }
+
+            const startY = stepPositions[0]
+
+            // Create timeline animation (loops infinitely)
+            const tl = gsap.timeline({ repeat: -1 })
+
+            // Reset to start - use y property which GSAP handles via transform
+            gsap.set(impulseRef.current, {
+              y: startY - 16, // Center impulse on dot (impulse height is 32px, so -16 to center)
+              opacity: 1,
+              clearProps: 'transform' // Clear any existing transform styles
+            })
+
+            // Animate through each step with dynamic duration based on distance
+            stepPositions.forEach((y, index) => {
+              const targetY = y - 16 // Center on dot
+
+              // Calculate duration based on distance traveled
+              let duration: number
+              if (index === 0) {
+                // First step - quick start
+                duration = 0.3
+              } else {
+                // Calculate distance from previous position
+                const prevY = stepPositions[index - 1] - 16
+                const distance = Math.abs(targetY - prevY)
+                // Base duration of 0.8s per 100px, minimum 0.5s, maximum 2s
+                duration = Math.max(0.5, Math.min(2.0, (distance / 100) * 0.8))
+              }
+
+              // Move to step position
+              tl.to(impulseRef.current, {
+                y: targetY,
+                duration: duration,
+                ease: 'power2.inOut',
+              })
+
+              // Highlight current step dot - start pulsation exactly when slider reaches the dot
+              if (stepsRef.current[index]) {
+                const dot = stepsRef.current[index]?.querySelector('.step-dot')
+                if (dot) {
+                  // Start pulsation exactly when slider reaches the dot position
+                  tl.to(
+                    dot,
+                    {
+                      scale: 1.4,
+                      duration: 0.2,
+                      ease: 'power2.out',
+                    },
+                    '>' // Start immediately after slider reaches position
+                  )
+                  tl.to(
+                    dot,
+                    {
+                      scale: 1,
+                      duration: 0.3,
+                      ease: 'power2.in',
+                    },
+                    '>0.2' // Start 0.2s after scale up animation
+                  )
+                }
+              }
+
+              // Pause at each step before moving to next (except for the last step)
+              if (index < stepPositions.length - 1) {
+                tl.to(impulseRef.current, {
+                  duration: 0.8, // Pause duration at each step
+                })
+              }
+            })
+
+            // Pause at end, then return to start
+            tl.to(impulseRef.current, {
+              duration: 0.5,
+            })
+            tl.to(impulseRef.current, {
+              y: startY - 16,
+              duration: 0.8,
+              ease: 'power2.in',
+            })
+            tl.to(impulseRef.current, {
+              opacity: 0.3,
+              duration: 0.2,
+            })
+            tl.to(impulseRef.current, {
+              opacity: 1,
+              duration: 0.2,
+            })
+
+            animationRef.current = tl
+            })
           })
-        } else {
-          // Move to next step
-          tl.to(impulseRef.current, {
-            y: targetY,
-            duration: 1.0,
-            ease: 'power2.inOut',
-          })
-        }
-
-        // Highlight current step dot
-        if (stepsRef.current[index]) {
-          const dot = stepsRef.current[index]?.querySelector('.step-dot')
-          if (dot) {
-            tl.to(
-              dot,
-              {
-                scale: 1.4,
-                duration: 0.2,
-                ease: 'power2.out',
-              },
-              '<0.1'
-            )
-            tl.to(
-              dot,
-              {
-                scale: 1,
-                duration: 0.3,
-                ease: 'power2.in',
-              },
-              '>0.2'
-            )
-          }
-        }
+        })
       })
-
-      // Pause at end, then return to start
-      tl.to(impulseRef.current, {
-        duration: 0.5,
-      })
-      tl.to(impulseRef.current, {
-        y: startY - 16,
-        duration: 0.8,
-        ease: 'power2.in',
-      })
-      tl.to(impulseRef.current, {
-        opacity: 0.3,
-        duration: 0.2,
-      })
-      tl.to(impulseRef.current, {
-        opacity: 1,
-        duration: 0.2,
-      })
-
-      animationRef.current = tl
-    }, 100)
+    }, 500) // Increased timeout for better layout stabilization with dynamic content
   }
 
   return (
@@ -236,7 +312,6 @@ function Timeline({ steps, title }: { steps: typeof longTermSteps; title: string
         ref={impulseRef}
         className="absolute left-6 sm:left-8 w-0.5 h-8 bg-[#27F579] z-20 opacity-0"
         style={{
-          transform: 'translateY(0px)',
           boxShadow: '0 0 20px rgba(39, 245, 121, 0.8), 0 0 40px rgba(39, 245, 121, 0.4)',
         }}
       ></div>
@@ -353,9 +428,9 @@ export default function ProcessTimeline() {
           {/* One-time product */}
           <div>
             <h3 className="text-2xl sm:text-3xl font-bold text-white mb-8 sm:mb-12 text-center lg:text-left">
-              Dostarczanie jednorazowego produktu
+              Dostarczenie produktu
             </h3>
-            <Timeline steps={oneTimeSteps} title="Dostarczanie jednorazowego produktu" />
+            <Timeline steps={oneTimeSteps} title="Dostarczenie produktu" />
           </div>
         </div>
       </div>
