@@ -25,7 +25,7 @@ export default function Hero() {
 
             {/* Headline */}
             <div>
-              <h1 className="max-w-[640px] text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.1] text-white">
+              <h1 className="max-w-[640px] text-4xl sm:text-6xl lg:text-7xl font-bold leading-[1.15] sm:leading-[1.1] text-white">
                 Automatyzacja
                 <br />
                 <LayoutTextFlip
