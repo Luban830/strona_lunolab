@@ -12,12 +12,12 @@ export default function SocialSection() {
       description: 'Obejrzyj nasze tutoriale i case studies',
       color: 'from-red-500 to-red-600',
       hoverColor: 'hover:from-red-400 hover:to-red-500',
-      imageUrl: '/youtube1.png',
+      imageUrl: 'https://pub-7713d4f0b3634fa085d0153341a85fef.r2.dev/youtube1.png',
     },
     skool: {
       name: 'Skool',
       url: 'https://www.skool.com/automatyzacjaai-polskalunolab-2698',
-      iconUrl: '/skoolicon1.png',
+      iconUrl: 'https://7713d4f0b3634fa085d0153341a85fef.r2.dev/t%C5%82onaytlunolab.png',
       description: 'Dołącz do naszej grupy AI',
       color: 'from-purple-500 to-purple-600',
       hoverColor: 'hover:from-purple-400 hover:to-purple-500',
@@ -30,7 +30,7 @@ export default function SocialSection() {
       description: 'Śledź nasze krótkie formy',
       color: 'from-black to-gray-900',
       hoverColor: 'hover:from-gray-800 hover:to-gray-900',
-      imageUrl: '/tiktok1.png',
+      imageUrl: 'https://pub-7713d4f0b3634fa085d0153341a85fef.r2.dev/tiktok1.png',
     },
   }
 
@@ -226,46 +226,16 @@ export default function SocialSection() {
               rel="noopener noreferrer"
               className="group relative flex-1"
             >
-              <div className="relative h-full bg-[#111211] border border-white/10 rounded-2xl overflow-hidden hover:border-[#27F579]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#27F579]/10 hover:-translate-y-1 flex flex-col">
+              <div
+                className="relative h-full border border-white/10 rounded-2xl overflow-hidden hover:border-[#27F579]/50 transition-all duration-300 hover:shadow-lg hover:shadow-[#27F579]/10 hover:-translate-y-1 flex flex-col bg-cover bg-center"
+                style={{
+                  backgroundImage:
+                    "linear-gradient(to bottom, rgba(10,11,10,0.35), rgba(10,11,10,0.85)), url('https://pub-7713d4f0b3634fa085d0153341a85fef.r2.dev/t%C5%82onaytlunolab.png')",
+                }}
+              >
                 {/* Image/Background Section - Top */}
                 <div className="relative h-2/3 flex-shrink-0">
-                  {socialLinks.skool.imageUrl ? (
-                    <>
-                      <Image
-                        src={socialLinks.skool.imageUrl}
-                        alt="Skool thumbnail"
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                      {/* Dark overlay */}
-                      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0b0a]/60 via-[#0a0b0a]/40 to-[#0a0b0a]/60"></div>
-                      {/* Purple gradient overlay on hover */}
-                      <div className={`absolute inset-0 bg-gradient-to-br ${socialLinks.skool.color} opacity-0 group-hover:opacity-20 transition-opacity duration-300`}></div>
-                    </>
-                  ) : (
-                    /* Fallback gradient if no image */
-                    <div className="absolute inset-0">
-                      <div className={`absolute inset-0 bg-gradient-to-br ${socialLinks.skool.color} opacity-20`}></div>
-                      <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,.05)_25%,rgba(255,255,255,.05)_50%,transparent_50%,transparent_75%,rgba(255,255,255,.05)_75%,rgba(255,255,255,.05))] bg-[length:15px_15px] opacity-30"></div>
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#0a0b0a]/70 via-[#0a0b0a]/50 to-[#0a0b0a]/70"></div>
-                      <div className={`absolute inset-0 bg-gradient-to-br ${socialLinks.skool.color} opacity-0 group-hover:opacity-30 transition-opacity duration-300`}></div>
-                    </div>
-                  )}
-
-                  {/* Icon overlay */}
-                  <div className="absolute inset-0 flex items-center justify-center z-10">
-                    <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Image
-                        src={socialLinks.skool.iconUrl}
-                        alt="Skool icon"
-                        width={96}
-                        height={96}
-                        className="w-full h-full object-contain"
-                        unoptimized
-                      />
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-purple-700/20 opacity-0 group-hover:opacity-30 transition-opacity duration-300"></div>
                 </div>
 
                 {/* Content Section - Bottom */}

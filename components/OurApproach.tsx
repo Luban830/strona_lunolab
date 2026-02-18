@@ -14,7 +14,7 @@ export default function OurApproach() {
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
             <div className="relative w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[650px] aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
               <Image
-                src="/DSCF8700.jpg"
+                src="https://pub-7713d4f0b3634fa085d0153341a85fef.r2.dev/DSCF8700.jpg"
                 alt="Nasze podejście do współpracy z klientami - Lunolab automatyzacja AI"
                 fill
                 className="object-cover"
