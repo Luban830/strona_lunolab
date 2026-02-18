@@ -19,9 +19,9 @@ export default function Navbar() {
   }, [])
 
   const navLinks = [
+    { href: '/#video', label: 'O nas' },
     { href: '/#uslugi', label: 'Usługi' },
     { href: '/#case-studies', label: 'Projekty' },
-    { href: '/#video', label: 'O nas' },
     { href: '/projekty', label: 'Case studies' },
   ]
 

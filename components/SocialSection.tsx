@@ -41,7 +41,7 @@ export default function SocialSection() {
       <div className="absolute top-16 left-4 sm:left-8 opacity-15 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={50}
           height={50}
           className="w-8 h-8 sm:w-10 sm:h-10"
@@ -51,7 +51,7 @@ export default function SocialSection() {
       <div className="absolute top-1/3 left-12 sm:left-20 opacity-12 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={45}
           height={45}
           className="w-6 h-6 sm:w-9 sm:h-9 rotate-60"
@@ -61,7 +61,7 @@ export default function SocialSection() {
       <div className="absolute top-1/6 left-20 sm:left-28 opacity-10 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={40}
           height={40}
           className="w-6 h-6 sm:w-8 sm:h-8 rotate-90"
@@ -71,7 +71,7 @@ export default function SocialSection() {
       <div className="absolute bottom-16 right-4 sm:right-8 opacity-15 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={50}
           height={50}
           className="w-8 h-8 sm:w-10 sm:h-10 rotate-120"
@@ -81,7 +81,7 @@ export default function SocialSection() {
       <div className="absolute bottom-1/3 right-12 sm:right-20 opacity-12 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={45}
           height={45}
           className="w-6 h-6 sm:w-9 sm:h-9 -rotate-60"
@@ -91,7 +91,7 @@ export default function SocialSection() {
       <div className="absolute bottom-1/6 right-20 sm:right-28 opacity-10 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={40}
           height={40}
           className="w-6 h-6 sm:w-8 sm:h-8 -rotate-90"
@@ -101,7 +101,7 @@ export default function SocialSection() {
       <div className="absolute top-1/2 left-16 sm:left-24 opacity-10 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={35}
           height={35}
           className="w-5 h-5 sm:w-7 sm:h-7 rotate-30"
@@ -111,7 +111,7 @@ export default function SocialSection() {
       <div className="absolute bottom-1/2 right-16 sm:right-24 opacity-10 pointer-events-none z-0">
         <Image
           src="/Moon Logo (1).png"
-          alt=""
+          alt="Moon Logo"
           width={35}
           height={35}
           className="w-5 h-5 sm:w-7 sm:h-7 -rotate-30"
@@ -147,10 +147,9 @@ export default function SocialSection() {
                   <>
                     <Image
                       src={socialLinks.youtube.imageUrl}
-                      alt="YouTube - Lunolab - Filmy o automatyzacji AI i sztucznej inteligencji"
+                      alt="YouTube thumbnail"
                       fill
                       className="object-cover"
-                      loading="lazy"
                       unoptimized
                     />
                     {/* Dark overlay */}
@@ -173,7 +172,7 @@ export default function SocialSection() {
                   <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                     <Image
                       src={socialLinks.youtube.iconUrl}
-                      alt="Ikona YouTube - Lunolab"
+                      alt="YouTube icon"
                       width={96}
                       height={96}
                       className="w-full h-full object-contain"
@@ -234,10 +233,9 @@ export default function SocialSection() {
                     <>
                       <Image
                         src={socialLinks.skool.imageUrl}
-                        alt="Skool - Lunolab - Społeczność automatyzacji AI"
+                        alt="Skool thumbnail"
                         fill
                         className="object-cover"
-                        loading="lazy"
                         unoptimized
                       />
                       {/* Dark overlay */}
@@ -260,7 +258,7 @@ export default function SocialSection() {
                     <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <Image
                         src={socialLinks.skool.iconUrl}
-                        alt="Ikona Skool - Lunolab"
+                        alt="Skool icon"
                         width={96}
                         height={96}
                         className="w-full h-full object-contain"
@@ -319,10 +317,9 @@ export default function SocialSection() {
                     <>
                       <Image
                         src={socialLinks.tiktok.imageUrl}
-                        alt="TikTok - Lunolab - Krótkie filmy o automatyzacji AI"
+                        alt="TikTok thumbnail"
                         fill
                         className="object-cover"
-                        loading="lazy"
                         unoptimized
                       />
                       {/* Dark overlay */}
@@ -345,7 +342,7 @@ export default function SocialSection() {
                     <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <Image
                         src={socialLinks.tiktok.iconUrl}
-                        alt="Ikona TikTok - Lunolab"
+                        alt="TikTok icon"
                         width={96}
                         height={96}
                         className="w-full h-full object-contain"
