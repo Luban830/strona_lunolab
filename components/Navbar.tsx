@@ -62,7 +62,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-300 ${
         isScrolled
           ? 'bg-[#0a0b0a]/95 backdrop-blur-md border-b border-[#27F579]/20'
           : 'bg-transparent'
@@ -151,8 +151,8 @@ export default function Navbar() {
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="md:hidden pb-4 border-t border-[#27F579]/20 mt-4 pt-4">
-            <div className="flex flex-col space-y-4">
+          <div className="md:hidden fixed top-20 left-0 right-0 z-[9999] h-[calc(100vh-5rem)] w-full overflow-y-auto bg-[#050505] border-t border-[#27F579]/20 px-4 sm:px-6 py-6">
+            <div className="flex flex-col space-y-2">
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href.replace('/#', '/') ||
@@ -162,7 +162,7 @@ export default function Navbar() {
                     key={link.href}
                     href={link.href}
                     onClick={(e) => handleLinkClick(e, link.href)}
-                    className={`text-base font-medium transition-colors ${
+                    className={`rounded-xl px-3 py-3 text-base font-medium transition-colors ${
                       isActive
                         ? 'text-[#27F579]'
                         : 'text-gray-300 hover:text-[#27F579]'
@@ -175,7 +175,7 @@ export default function Navbar() {
               <Link
                 href="/umow-spotkanie"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold text-center mt-2 shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95"
+                className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold text-center mt-3 shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95"
               >
                 Umów spotkanie
               </Link>
