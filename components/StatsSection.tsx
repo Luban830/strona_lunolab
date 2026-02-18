@@ -40,11 +40,18 @@ const updateCardGlowProperties = (card: HTMLElement, mouseX: number, mouseY: num
 interface StatCardProps {
   label: string
   value: string
+  valueClassName?: string
   particleCount?: number
   glowColor?: string
 }
 
-function StatCard({ label, value, particleCount = DEFAULT_PARTICLE_COUNT, glowColor = DEFAULT_GLOW_COLOR }: StatCardProps) {
+function StatCard({
+  label,
+  value,
+  valueClassName,
+  particleCount = DEFAULT_PARTICLE_COUNT,
+  glowColor = DEFAULT_GLOW_COLOR,
+}: StatCardProps) {
   const cardRef = useRef<HTMLDivElement>(null)
   const particlesRef = useRef<HTMLDivElement[]>([])
   const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([])
@@ -194,7 +201,7 @@ function StatCard({ label, value, particleCount = DEFAULT_PARTICLE_COUNT, glowCo
     >
       <div className="magic-bento-card__content h-full flex flex-col justify-center">
         <div className="magic-bento-card__label mb-3">{label}</div>
-        <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#27F579] via-[#20c46a] to-[#1a7a4a] bg-clip-text text-transparent">
+        <div className={`text-xl sm:text-2xl font-bold bg-gradient-to-r from-[#27F579] via-[#20c46a] to-[#1a7a4a] bg-clip-text text-transparent ${valueClassName ?? ''}`}>
           {value}
         </div>
       </div>
@@ -290,15 +297,16 @@ export default function StatsSection() {
           <div className="flex-1 min-w-0">
             <StatCard
               label="Zaoszczędzone pieniądze"
-              value="3 tys. złotych miesięcznie"
+              value="3 000 zł miesięcznie"
+              valueClassName="relative left-[2px]"
               particleCount={8}
               glowColor="39, 245, 121"
             />
           </div>
           <div className="flex-1 min-w-0">
             <StatCard
-              label="Skalowalność procesów"
-              value="+40 nowych klientów miesięcznie"
+              label="satysfakcja"
+              value="100% zadowolonych klientów"
               particleCount={8}
               glowColor="39, 245, 121"
             />
