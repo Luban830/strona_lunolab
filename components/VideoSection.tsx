@@ -1,16 +1,20 @@
 'use client'
 
 import { useRef, useState, useEffect, useCallback } from 'react'
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { Play, Pause, Volume2, VolumeX, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 
 export default function VideoSection() {
+  const videoUrl = 'https://s8gdymns2mnpveqg.public.blob.vercel-storage.com/filmstrona.mov'
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false) // Start with sound ON
+  const [isBuffering, setIsBuffering] = useState(false)
+  const [showUnmutePrompt, setShowUnmutePrompt] = useState(false)
   const hasAutoplayedRef = useRef(false)
   const isUserPausedRef = useRef(false)
+  const isRecoveringRef = useRef(false)
 
   const togglePlay = useCallback(() => {
     const video = videoRef.current
@@ -36,6 +40,7 @@ export default function VideoSection() {
 
     video.muted = !video.muted
     setIsMuted(video.muted)
+    if (!video.muted) setShowUnmutePrompt(false)
   }, [])
 
   // Autoplay with sound when visible
@@ -53,6 +58,7 @@ export default function VideoSection() {
         setIsMuted(false)
         await video.play()
         setIsPlaying(true)
+        setShowUnmutePrompt(false)
         hasAutoplayedRef.current = true
       } catch {
         // Browser blocked - try muted as fallback
@@ -61,6 +67,7 @@ export default function VideoSection() {
           setIsMuted(true)
           await video.play()
           setIsPlaying(true)
+          setShowUnmutePrompt(true)
           hasAutoplayedRef.current = true
         } catch {
           // Autoplay completely blocked
@@ -90,22 +97,83 @@ export default function VideoSection() {
     }
   }, [])
 
-  // Sync state with video events
+  const recoverPlayback = useCallback(() => {
+    const video = videoRef.current
+    if (!video || isRecoveringRef.current) return
+
+    isRecoveringRef.current = true
+    setIsBuffering(true)
+
+    const resumeTime = video.currentTime
+    const shouldResumePlayback = !video.paused && !isUserPausedRef.current
+    const recoveryTimeout = window.setTimeout(() => {
+      isRecoveringRef.current = false
+      setIsBuffering(false)
+    }, 5000)
+
+    const onLoadedMetadata = async () => {
+      window.clearTimeout(recoveryTimeout)
+
+      try {
+        if (Number.isFinite(resumeTime) && resumeTime > 0) {
+          video.currentTime = resumeTime
+        }
+
+        if (shouldResumePlayback) {
+          await video.play()
+          setIsPlaying(true)
+        }
+      } catch {
+        // Recovery failed; user can still manually retry.
+      } finally {
+        isRecoveringRef.current = false
+        setIsBuffering(false)
+      }
+    }
+
+    video.addEventListener('loadedmetadata', onLoadedMetadata, { once: true })
+    video.load()
+  }, [])
+
+  // Sync state with video/network events
   useEffect(() => {
     const video = videoRef.current
     if (!video) return
 
     const onPlay = () => setIsPlaying(true)
     const onPause = () => setIsPlaying(false)
+    const onWaiting = () => {
+      if (!video.paused) setIsBuffering(true)
+    }
+    const onPlaying = () => setIsBuffering(false)
+    const onCanPlay = () => setIsBuffering(false)
+    const onStalled = () => {
+      setIsBuffering(true)
+      recoverPlayback()
+    }
+    const onError = () => {
+      setIsBuffering(true)
+      recoverPlayback()
+    }
 
     video.addEventListener('play', onPlay)
     video.addEventListener('pause', onPause)
+    video.addEventListener('waiting', onWaiting)
+    video.addEventListener('playing', onPlaying)
+    video.addEventListener('canplay', onCanPlay)
+    video.addEventListener('stalled', onStalled)
+    video.addEventListener('error', onError)
 
     return () => {
       video.removeEventListener('play', onPlay)
       video.removeEventListener('pause', onPause)
+      video.removeEventListener('waiting', onWaiting)
+      video.removeEventListener('playing', onPlaying)
+      video.removeEventListener('canplay', onCanPlay)
+      video.removeEventListener('stalled', onStalled)
+      video.removeEventListener('error', onError)
     }
-  }, [])
+  }, [recoverPlayback])
 
   return (
     <section id="video" className="py-24 px-4 sm:px-6 lg:px-8 bg-[#0a0b0a] relative">
@@ -209,7 +277,7 @@ export default function VideoSection() {
         >
           <video
             ref={videoRef}
-            src="/film.MOV"
+            src={videoUrl}
             className="absolute inset-0 w-full h-full object-cover"
             loop
             playsInline
@@ -224,6 +292,40 @@ export default function VideoSection() {
 
           {/* Overlay gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-20" />
+
+          {isBuffering && (
+            <div className="absolute inset-0 z-40 flex items-center justify-center bg-black/30 pointer-events-none" role="status" aria-live="polite">
+              <div className="flex items-center gap-2 rounded-full bg-black/60 px-4 py-2 text-sm text-white">
+                <Loader2 className="h-4 w-4 animate-spin" />
+                Ladowanie wideo...
+              </div>
+            </div>
+          )}
+
+          {showUnmutePrompt && (
+            <button
+              type="button"
+              onClick={async (e) => {
+                e.stopPropagation()
+                const video = videoRef.current
+                if (!video) return
+
+                try {
+                  video.muted = false
+                  await video.play()
+                  setIsMuted(false)
+                  setShowUnmutePrompt(false)
+                } catch {
+                  video.muted = true
+                  setIsMuted(true)
+                }
+              }}
+              className="absolute right-4 bottom-4 z-50 rounded-lg bg-black/70 border border-white/20 px-4 py-2 text-sm text-white hover:bg-black/80 transition-colors"
+              aria-label="Wlacz dzwiek"
+            >
+              Wlacz dzwiek
+            </button>
+          )}
 
           {/* Play button overlay - visible when paused */}
           {!isPlaying && (
