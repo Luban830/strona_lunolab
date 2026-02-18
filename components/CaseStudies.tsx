@@ -1,125 +1,93 @@
 'use client'
 
-import Link from 'next/link'
+import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Carousel } from '@/components/ui/carousel'
-
-// Typ projektu
-type Project = {
-  id: number
-  client: string
-  metric: string
-  metricLabel: string
-  description: string
-  images: string[]
-  category: string
-}
-
-// Tablica projektów - dodaj tutaj nowe projekty
-// Struktura projektu:
-// {
-//   id: number,
-//   client: string,
-//   metric: string,
-//   metricLabel: string,
-//   description: string,
-//   images: string[],
-//   category: string
-// }
-const projects: Project[] = []
-
-// Mini galeria zdjęć z płynnym ciągłym przewijaniem (marquee)
-function MarqueeGallery({ images }: { images: string[] }) {
-  // Duplikujemy zdjęcia dla płynnego loopa
-  const duplicatedImages = [...images, ...images, ...images]
-
-  return (
-    <div className="relative w-full overflow-hidden">
-      <style jsx>{`
-        @keyframes marquee-scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-33.333%);
-          }
-        }
-        .marquee-track {
-          animation: marquee-scroll 25s linear infinite;
-        }
-        .marquee-track:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
-      <div
-        className="marquee-track flex"
-        style={{ width: 'max-content', gap: '2px' }}
-      >
-        {duplicatedImages.map((image, index) => (
-          <div
-            key={index}
-            className="flex-shrink-0 overflow-hidden"
-            style={{ width: 'clamp(160px, 30vw, 220px)', aspectRatio: '16/10' }}
-          >
-            <img
-              src={image}
-              alt={`Projekt automatyzacji ${index + 1} - Zrzut ekranu rozwiązania AI dla klienta`}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
+import ProjectDetailsModal from '@/components/ProjectDetailsModal'
+import { projects, type Project } from '@/lib/projects'
 
 // Pojedynczy kafelek projektu
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({
+  project,
+  onOpen,
+}: {
+  project: Project
+  onOpen: (project: Project) => void
+}) {
+  const handleOpen = () => {
+    onOpen(project)
+  }
+
   return (
-    <div className="h-full w-full relative overflow-hidden rounded-xl sm:rounded-2xl flex flex-col" style={{ minHeight: 'clamp(480px, 70vh, 580px)' }}>
-      {/* Górna sekcja z gradientem zielonym */}
-      <div className="bg-gradient-to-b from-[#0a2f1a] via-[#0d4025] to-[#0a2a16] p-4 sm:p-6 md:p-8 pb-6 sm:pb-8 md:pb-10 flex-shrink-0 border-t border-l border-r border-[#27F579]/20 rounded-t-xl sm:rounded-t-2xl text-center">
-        {/* Logo/nazwa klienta */}
-        <div className="text-[#27F579] text-base sm:text-lg md:text-xl font-semibold mb-3 sm:mb-4 md:mb-5 tracking-wide">
-          {project.client}
-        </div>
-
-        {/* Metryka - duży headline */}
-        <h3 className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-1 sm:mb-2 leading-tight">
-          {project.metric}
-        </h3>
-        <p className="text-lg sm:text-xl md:text-2xl font-bold text-white/90 leading-tight mb-3 sm:mb-4 md:mb-5">
-          {project.metricLabel}
-        </p>
-
-        {/* Opis */}
-        <p className="text-white/70 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
-          {project.description}
-        </p>
+    <article
+      onClick={handleOpen}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          handleOpen()
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      className="h-full w-full relative overflow-hidden rounded-xl sm:rounded-2xl bg-[#111211] border border-white/10 hover:border-[#27F579]/40 transition-all duration-300 flex flex-col cursor-pointer"
+      style={{ minHeight: 'clamp(420px, 60vh, 520px)' }}
+      aria-label={`Otwórz case study: ${project.title}`}
+    >
+      <div className="bg-black p-4 sm:p-6 border-b border-white/10 flex items-center justify-center min-h-[220px]">
+        <Image
+          src={project.logo}
+          alt={`Logo klienta dla case study: ${project.title}`}
+          width={360}
+          height={180}
+          className="w-full h-auto max-h-44 sm:max-h-52 object-contain"
+          unoptimized
+        />
       </div>
 
-      {/* Dolna sekcja z galerią */}
-      <div className="bg-[#0a1a10] flex-1 flex flex-col border-b border-l border-r border-[#27F579]/20 rounded-b-xl sm:rounded-b-2xl">
-        <MarqueeGallery images={project.images} />
-
-        {/* CTA */}
-        <div className="p-3 sm:p-4 md:p-5 pt-4 sm:pt-5 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <span className="text-white/60 text-xs sm:text-sm hidden sm:block">
-            Zobacz jak możemy Ci pomóc →
+      <div className="p-5 sm:p-6 md:p-7 flex flex-col flex-1">
+        <div className="mb-4">
+          <span className="inline-flex items-center rounded-full border border-[#27F579]/50 bg-[#27F579]/10 px-3 py-1 text-xs font-semibold tracking-wide text-[#27F579]">
+            {project.category}
           </span>
-          <Link href="/umow-spotkanie" onClick={(e) => e.stopPropagation()}>
-            <button className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-5 sm:px-6 py-2.5 sm:py-3 text-[#151716] font-semibold text-sm sm:text-base shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-105 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_12px_0px_rgba(39,245,121,0.4)] hover:brightness-110">
-              Umów spotkanie
-            </button>
-          </Link>
+        </div>
+
+        <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-3">
+          {project.title}
+        </h3>
+        <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-6">
+          {project.shortDescription}
+        </p>
+
+        <div className="mt-auto">
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleOpen()
+            }}
+            className="inline-flex items-center justify-center rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 py-3 text-[#151716] font-semibold text-sm sm:text-base shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 hover:scale-105 hover:brightness-110 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_12px_0px_rgba(39,245,121,0.4)] active:scale-95"
+          >
+            Zobacz case study
+          </button>
         </div>
       </div>
-    </div>
+    </article>
   )
 }
 
 export default function CaseStudies() {
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
+
+  const openProjectDetails = (project: Project) => {
+    setSelectedProject(project)
+  }
+
+  const closeProjectDetails = () => {
+    setSelectedProject(null)
+  }
+
   return (
     <section id="case-studies" className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8 bg-[#0a0b0a] relative">
       {/* Subtle grid pattern */}
@@ -252,7 +220,11 @@ export default function CaseStudies() {
             <Carousel
               options={{ loop: true, align: 'center' }}
               slides={projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  onOpen={openProjectDetails}
+                />
               ))}
             />
           </motion.div>
@@ -265,13 +237,19 @@ export default function CaseStudies() {
           viewport={{ once: true }}
           className="flex justify-center mt-10 sm:mt-12"
         >
-          <Link href="/projekty">
-            <button className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 sm:px-8 py-3 sm:py-4 text-[#151716] font-semibold text-base sm:text-lg shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-105 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_12px_0px_rgba(39,245,121,0.4)] hover:brightness-110">
-              Zobacz wszystkie projekty
-            </button>
+          <Link
+            href="/projekty"
+            className="cursor-pointer rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-6 sm:px-8 py-3 sm:py-4 text-[#151716] font-semibold text-base sm:text-lg shadow-[0px_2px_0px_0px_rgba(39,245,121,0.3)_inset,0px_0.5px_1px_0px_rgba(0,0,0,0.3)] transition-all duration-200 active:scale-95 hover:scale-105 hover:shadow-[0px_2px_0px_0px_rgba(39,245,121,0.5)_inset,0px_4px_12px_0px_rgba(39,245,121,0.4)] hover:brightness-110"
+          >
+            Zobacz wszystkie projekty
           </Link>
         </motion.div>
       </div>
+
+      <ProjectDetailsModal
+        selectedProject={selectedProject}
+        onClose={closeProjectDetails}
+      />
     </section>
   )
 }

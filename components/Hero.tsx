@@ -50,19 +50,19 @@ export default function Hero() {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4 justify-center lg:justify-start">
               <Link href="/umow-spotkanie" className="w-full sm:w-auto">
-                <button className="group w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#27F579] to-[#20c46a] text-[#151716] font-semibold px-6 sm:px-7 py-3 sm:py-4 rounded-full shadow-lg shadow-[#27F579]/25 hover:shadow-xl hover:shadow-[#27F579]/30 transition-all duration-300 hover:scale-105" aria-label="Umów się na darmową konsultację">
+                <span className="group w-full sm:w-auto flex items-center justify-center gap-3 bg-gradient-to-r from-[#27F579] to-[#20c46a] text-[#151716] font-semibold px-6 sm:px-7 py-3 sm:py-4 rounded-full shadow-lg shadow-[#27F579]/25 hover:shadow-xl hover:shadow-[#27F579]/30 transition-all duration-300 hover:scale-105" aria-label="Umów się na darmową konsultację">
                   Darmowa konsultacja
                   <span className="w-8 h-8 bg-[#0a0b0a]/20 rounded-full flex items-center justify-center group-hover:bg-[#0a0b0a]/30 transition-colors">
                     <ArrowUpRight className="w-4 h-4" />
                   </span>
-                </button>
+                </span>
               </Link>
 
               <Link href="/projekty" className="w-full sm:w-auto">
-                <button className="group w-full sm:w-auto flex items-center justify-center gap-3 bg-white/5 text-white font-semibold px-6 sm:px-7 py-3 sm:py-4 rounded-full border border-white/20 hover:border-[#27F579]/50 hover:bg-[#27F579]/10 transition-all duration-300" aria-label="Zobacz wszystkie projekty automatyzacji AI">
+                <span className="group w-full sm:w-auto flex items-center justify-center gap-3 bg-white/5 text-white font-semibold px-6 sm:px-7 py-3 sm:py-4 rounded-full border border-white/20 hover:border-[#27F579]/50 hover:bg-[#27F579]/10 transition-all duration-300" aria-label="Zobacz wszystkie projekty automatyzacji AI">
                   Zobacz nasze projekty
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
+                </span>
               </Link>
             </div>
 

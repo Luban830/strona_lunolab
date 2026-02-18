@@ -22,7 +22,7 @@ export default function Navbar() {
     { href: '/#uslugi', label: 'Usługi' },
     { href: '/#case-studies', label: 'Projekty' },
     { href: '/#video', label: 'O nas' },
-    { href: '/projekty', label: 'Wszystkie projekty' },
+    { href: '/projekty', label: 'Case studies' },
   ]
 
   const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {

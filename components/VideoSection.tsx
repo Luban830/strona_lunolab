@@ -1,42 +1,13 @@
 'use client'
 
-import { useRef, useState, useEffect, useCallback } from 'react'
-import { Play, Pause, Volume2, VolumeX } from 'lucide-react'
+import { useRef, useEffect } from 'react'
 import Image from 'next/image'
 
 export default function VideoSection() {
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(false) // Start with sound ON
   const hasAutoplayedRef = useRef(false)
   const isUserPausedRef = useRef(false)
-
-  const togglePlay = useCallback(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    if (video.paused) {
-      video.play().then(() => {
-        setIsPlaying(true)
-        isUserPausedRef.current = false
-      }).catch(() => {
-        // Autoplay blocked
-      })
-    } else {
-      video.pause()
-      setIsPlaying(false)
-      isUserPausedRef.current = true
-    }
-  }, [])
-
-  const toggleMute = useCallback(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    video.muted = !video.muted
-    setIsMuted(video.muted)
-  }, [])
 
   // Autoplay with sound when visible
   useEffect(() => {
@@ -50,17 +21,13 @@ export default function VideoSection() {
       // Try with sound first
       try {
         video.muted = false
-        setIsMuted(false)
         await video.play()
-        setIsPlaying(true)
         hasAutoplayedRef.current = true
       } catch {
         // Browser blocked - try muted as fallback
         try {
           video.muted = true
-          setIsMuted(true)
           await video.play()
-          setIsPlaying(true)
           hasAutoplayedRef.current = true
         } catch {
           // Autoplay completely blocked
@@ -75,7 +42,6 @@ export default function VideoSection() {
             tryAutoplay()
           } else if (!entry.isIntersecting) {
             video.pause()
-            setIsPlaying(false)
           }
         })
       },
@@ -86,23 +52,6 @@ export default function VideoSection() {
 
     return () => {
       observer.disconnect()
-    }
-  }, [])
-
-  // Sync state with video events
-  useEffect(() => {
-    const video = videoRef.current
-    if (!video) return
-
-    const onPlay = () => setIsPlaying(true)
-    const onPause = () => setIsPlaying(false)
-
-    video.addEventListener('play', onPlay)
-    video.addEventListener('pause', onPause)
-
-    return () => {
-      video.removeEventListener('play', onPlay)
-      video.removeEventListener('pause', onPause)
     }
   }, [])
 
@@ -204,7 +153,7 @@ export default function VideoSection() {
 
         <div
           ref={containerRef}
-          className="relative aspect-video bg-[#111211] border border-[#27F579]/20 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 group"
+          className="relative aspect-video bg-[#111211] border border-[#27F579]/20 rounded-2xl overflow-hidden shadow-2xl shadow-black/50"
         >
           <video
             ref={videoRef}
@@ -213,50 +162,11 @@ export default function VideoSection() {
             loop
             playsInline
             preload="auto"
-          />
-
-          {/* Clickable overlay for play/pause */}
-          <div
-            className="absolute inset-0 cursor-pointer z-10"
-            onClick={togglePlay}
+            controls
           />
 
           {/* Overlay gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent pointer-events-none z-20" />
-
-          {/* Play button overlay - visible when paused */}
-          {!isPlaying && (
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-30">
-              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#27F579] flex items-center justify-center shadow-lg shadow-[#27F579]/30">
-                <Play className="w-8 h-8 sm:w-10 sm:h-10 text-[#0a0b0a] ml-1" fill="#0a0b0a" />
-              </div>
-            </div>
-          )}
-
-          {/* Controls */}
-          <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-40">
-            <button
-              onClick={(e) => { e.stopPropagation(); togglePlay(); }}
-              className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-colors"
-            >
-              {isPlaying ? (
-                <Pause className="w-5 h-5 text-white" />
-              ) : (
-                <Play className="w-5 h-5 text-white ml-0.5" />
-              )}
-            </button>
-
-            <button
-              onClick={(e) => { e.stopPropagation(); toggleMute(); }}
-              className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-colors"
-            >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5 text-white" />
-              ) : (
-                <Volume2 className="w-5 h-5 text-white" />
-              )}
-            </button>
-          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none z-10" />
         </div>
       </div>
     </section>
