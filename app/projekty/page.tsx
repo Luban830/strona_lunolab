@@ -1,243 +1,106 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Image from 'next/image'
-import { X } from 'lucide-react'
+import Link from 'next/link'
+import { supabase, Project } from '@/lib/supabase'
 
-// Typ projektu
-type Project = {
-  id: number
-  client: string
-  title: string
-  category: string
-  metric: string
-  metricLabel: string
-  description: string
-  images: string[]
-  details: string
+export const revalidate = 3600
+
+async function getCaseStudies(): Promise<Project[]> {
+  const { data, error } = await supabase
+    .from('projects')
+    .select('*')
+    .order('created_at', { ascending: false })
+
+  if (error) {
+    console.error('Error fetching case studies:', error.message)
+    return []
+  }
+
+  return data as Project[]
 }
 
-// Tablica projektów - dodaj tutaj nowe projekty
-// Struktura projektu:
-// {
-//   id: number,
-//   client: string,
-//   title: string,
-//   category: string,
-//   metric: string,
-//   metricLabel: string,
-//   description: string,
-//   images: string[],
-//   details: string
-// }
-const projects: Project[] = []
-
-// Funkcja do mapowania kategorii na etykiety
-const getCategoryLabel = (category: string) => {
-  const labels: Record<string, string> = {
-    'AI Chatbot': 'AI CHATBOT',
-    'Automatyzacja': 'AUTOMATYZACJA',
-    'Machine Learning': 'MACHINE LEARNING',
-    'Computer Vision': 'COMPUTER VISION',
-    'NLP': 'NLP',
-  }
-  return labels[category] || category.toUpperCase()
-}
-
-export default function ProjektyPage() {
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
-
-  const openProjectDetails = (project: Project) => {
-    setSelectedProject(project)
-  }
-
-  const closeProjectDetails = () => {
-    setSelectedProject(null)
-  }
-
-  // Blokuj scroll na body gdy modal jest otwarty
-  useEffect(() => {
-    if (selectedProject) {
-      // Zapisz aktualną pozycję scrolla
-      const scrollY = window.scrollY
-      // Zablokuj scroll
-      document.body.style.position = 'fixed'
-      document.body.style.top = `-${scrollY}px`
-      document.body.style.width = '100%'
-      document.body.style.overflow = 'hidden'
-    } else {
-      // Przywróć scroll
-      const scrollY = document.body.style.top
-      document.body.style.position = ''
-      document.body.style.top = ''
-      document.body.style.width = ''
-      document.body.style.overflow = ''
-      if (scrollY) {
-        const scrollPosition = parseInt(scrollY.replace('px', '').replace('-', ''))
-        window.scrollTo(0, scrollPosition)
-      }
-    }
-
-    // Cleanup przy unmount
-    return () => {
-      if (!selectedProject) {
-        document.body.style.position = ''
-        document.body.style.top = ''
-        document.body.style.width = ''
-        document.body.style.overflow = ''
-      }
-    }
-  }, [selectedProject])
+export default async function ProjektyPage() {
+  const projects = await getCaseStudies()
 
   return (
-    <div className="min-h-screen bg-[#0a0b0a] pt-20">
-      <main className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Tytuł w lewym górnym rogu */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 sm:mb-12 text-left">
-            Case studies
-            </h1>
+    <section className="min-h-screen bg-[#0a0b0a] relative overflow-hidden pt-24 pb-16 sm:pb-20 md:pb-24 px-4 sm:px-6 lg:px-8">
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#27F57910_1px,transparent_1px),linear-gradient(to_bottom,#27F57910_1px,transparent_1px)] bg-[length:60px_60px]" />
+      <div className="absolute top-24 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#27F579]/12 via-[#27F579]/5 to-transparent rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-full h-[240px] bg-gradient-to-t from-[#0a0b0a] to-transparent" />
 
-          {/* Grid projektów */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {projects.map((project) => (
-              <div
-                key={project.id}
-                onClick={() => openProjectDetails(project)}
-                className="bg-[#111211] rounded-2xl overflow-hidden border border-white/10 hover:border-[#27F579]/50 transition-all duration-300 group cursor-pointer hover:shadow-lg hover:shadow-[#27F579]/10"
-              >
-                {/* Galeria screenshotów */}
-                <div className="relative h-64 sm:h-80 overflow-hidden">
-                  <div className="flex h-full">
-                    {project.images.map((image, index) => (
-                      <div
-                        key={index}
-                        className="flex-shrink-0 w-full h-full relative"
-                      >
-                        <Image
-                          src={image}
-                          alt={`${project.title} - Projekt automatyzacji AI - Zrzut ekranu ${index + 1}`}
-                          fill
-                          className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                          unoptimized
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4">
+            Nasze{' '}
+            <span className="bg-gradient-to-r from-[#27F579] via-[#20c46a] to-[#1a7a4a] bg-clip-text text-transparent">
+              case studies
+            </span>
+          </h1>
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-2xl mx-auto px-4">
+            Zobacz, jak automatyzujemy procesy AI dla naszych klientów.
+          </p>
+        </div>
 
-                {/* Tytuł projektu */}
-                <div className="p-4 sm:p-6">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-4">
-                    {project.title}
-                  </h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {projects.map((project) => (
+            <Link
+              key={project.id}
+              href={`/projekty/${project.slug}`}
+              aria-label={`Przejdź do case study: ${project.title}`}
+              className="block"
+            >
+              <article className="bg-[#111211] rounded-2xl overflow-hidden border border-white/10 hover:border-[#27F579]/50 transition-all duration-300 group hover:shadow-lg hover:shadow-[#27F579]/10">
+                {project.image_url && (
+                  <figure className="relative h-56 overflow-hidden">
+                    <Image
+                      src={project.image_url}
+                      alt={project.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b0a]/80 via-transparent to-transparent" />
+                  </figure>
+                )}
 
-                  {/* Etykieta kategorii */}
-                  <div className="inline-block">
+                {!project.image_url && (
+                  <div className="h-56 bg-gradient-to-b from-[#0a2f1a] via-[#0d4025] to-[#0a2a16] border-b border-[#27F579]/20" />
+                )}
+
+                <div className="p-5 sm:p-6">
+                  <div className="inline-block mb-3">
                     <span className="px-3 py-1.5 bg-[#27F579] text-[#0a0b0a] text-xs sm:text-sm font-semibold rounded-full">
-                      {getCategoryLabel(project.category)}
+                      {project.category}
                     </span>
                   </div>
-                </div>
-              </div>
-            ))}
-          </div>
 
-          {/* Jeśli brak projektów */}
-          {projects.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-gray-400 text-lg">
-                Brak projektów
-              </p>
-            </div>
-          )}
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight">
+                    {project.title}
+                  </h2>
+
+                  <div className="text-sm sm:text-base font-medium text-gray-400 mb-3">
+                    Klient:{' '}
+                    <span className="text-white/90">{project.client_name}</span>
+                  </div>
+
+                  <p className="text-white/70 leading-relaxed text-sm sm:text-base">
+                    {project.description}
+                  </p>
+                </div>
+              </article>
+            </Link>
+          ))}
         </div>
-      </main>
 
-      {/* Modal ze szczegółami projektu */}
-      {selectedProject && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-          onClick={closeProjectDetails}
-        >
-          <div
-            className="bg-[#111211] rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto border border-[#27F579]/20 shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header modala */}
-            <div className="sticky top-0 bg-[#111211] border-b border-white/10 p-6 flex items-center justify-between z-10">
-              <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                {selectedProject.title}
-              </h2>
-              <button
-                onClick={closeProjectDetails}
-                className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
-              >
-                <X className="w-6 h-6 text-white" />
-              </button>
-            </div>
-
-            {/* Zawartość modala */}
-            <div className="p-6">
-              {/* Metryki */}
-              <div className="mb-6 p-6 bg-gradient-to-br from-[#0a2f1a] via-[#0d4025] to-[#0a2a16] rounded-xl border border-[#27F579]/20">
-                <div className="text-[#27F579] text-sm font-semibold mb-2">
-                  {selectedProject.category}
-                </div>
-                <h3 className="text-4xl sm:text-5xl font-bold text-white mb-2">
-                  {selectedProject.metric}
-                </h3>
-                <p className="text-xl font-bold text-white/90 mb-4">
-                  {selectedProject.metricLabel}
-                </p>
-                <p className="text-white/70">
-                  {selectedProject.description}
-                </p>
-              </div>
-
-              {/* Szczegóły */}
-              <div className="mb-6">
-                <h4 className="text-xl font-bold text-white mb-3">Szczegóły projektu</h4>
-                <p className="text-gray-300 leading-relaxed">
-                  {selectedProject.details}
-                </p>
-              </div>
-
-              {/* Galeria screenshotów */}
-              <div className="mb-6">
-                <h4 className="text-xl font-bold text-white mb-4">Screenshoty</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {selectedProject.images.map((image, index) => (
-                    <div
-                      key={index}
-                      className="relative h-48 sm:h-64 rounded-xl overflow-hidden border border-white/10"
-                    >
-                      <Image
-                        src={image}
-                        alt={`${selectedProject.title} - Projekt automatyzacji AI - Zrzut ekranu rozwiązania ${index + 1}`}
-                        fill
-                        className="object-cover"
-                        unoptimized
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Przycisk CTA */}
-              <div className="flex justify-center">
-                <a
-                  href="/umow-spotkanie"
-                  className="inline-block rounded-full bg-gradient-to-r from-[#27F579] via-[#27F579] to-[#1a7a4a] px-8 py-4 text-[#0a0b0a] font-semibold text-lg shadow-lg shadow-[#27F579]/25 hover:shadow-xl hover:shadow-[#27F579]/30 transition-all duration-300 hover:scale-105"
-                >
-                  Umów spotkanie
-                </a>
-              </div>
-            </div>
+        {projects.length === 0 && (
+          <div className="mt-12 sm:mt-14 text-center border border-[#27F579]/20 bg-[#111211]/80 rounded-2xl p-8 sm:p-10">
+            <p className="text-gray-300 text-lg sm:text-xl font-semibold mb-2">
+              Brak projektów do wyświetlenia.
+            </p>
+            <p className="text-gray-400">
+              Dodaj rekordy w tabeli `projects` w Supabase, aby pojawiły się tutaj.
+            </p>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </section>
   )
 }

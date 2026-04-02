@@ -7,11 +7,16 @@ export const supabase: SupabaseClient = createClient(supabaseUrl, supabaseAnonKe
 
 export interface Project {
   id: string
+  slug: string
   title: string
   description: string
-  image_url: string
+  content: string | null
+  content_image_1: string | null
+  content_bottom: string | null
+  content_image_2: string | null
+  image_url: string | null
   client_name: string
   category: string
+  technologies: string[] | null
   created_at: string
 }
-
