@@ -8,7 +8,7 @@ async function getCaseStudies(): Promise<Project[]> {
   const { data, error } = await supabase
     .from('projects')
     .select('*')
-    .order('created_at', { ascending: false })
+    .order('sort_order', { ascending: true })
 
   if (error) {
     console.error('Error fetching case studies:', error.message)
@@ -46,11 +46,11 @@ export default async function ProjektyPage() {
               key={project.id}
               href={`/projekty/${project.slug}`}
               aria-label={`Przejdź do case study: ${project.title}`}
-              className="block"
+              className="block h-full"
             >
-              <article className="bg-[#111211] rounded-2xl overflow-hidden border border-white/10 hover:border-[#27F579]/50 transition-all duration-300 group hover:shadow-lg hover:shadow-[#27F579]/10">
+              <article className="h-full flex flex-col bg-[#111211] rounded-2xl overflow-hidden border border-white/10 hover:border-[#27F579]/50 transition-all duration-300 group hover:shadow-lg hover:shadow-[#27F579]/10">
                 {project.image_url && (
-                  <figure className="relative h-56 overflow-hidden">
+                  <figure className="relative h-56 overflow-hidden flex-shrink-0">
                     <Image
                       src={project.image_url}
                       alt={project.title}
@@ -62,17 +62,17 @@ export default async function ProjektyPage() {
                 )}
 
                 {!project.image_url && (
-                  <div className="h-56 bg-gradient-to-b from-[#0a2f1a] via-[#0d4025] to-[#0a2a16] border-b border-[#27F579]/20" />
+                  <div className="h-56 flex-shrink-0 bg-gradient-to-b from-[#0a2f1a] via-[#0d4025] to-[#0a2a16] border-b border-[#27F579]/20" />
                 )}
 
-                <div className="p-5 sm:p-6">
+                <div className="p-5 sm:p-6 flex flex-col flex-grow">
                   <div className="inline-block mb-3">
                     <span className="px-3 py-1.5 bg-[#27F579] text-[#0a0b0a] text-xs sm:text-sm font-semibold rounded-full">
                       {project.category}
                     </span>
                   </div>
 
-                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-white mb-3 leading-tight flex-grow">
                     {project.title}
                   </h2>
 
@@ -81,9 +81,11 @@ export default async function ProjektyPage() {
                     <span className="text-white/90">{project.client_name}</span>
                   </div>
 
-                  <p className="text-white/70 leading-relaxed text-sm sm:text-base">
-                    {project.description}
-                  </p>
+                  {project.description && (
+                    <p className="text-white/70 leading-relaxed text-sm sm:text-base">
+                      {project.description}
+                    </p>
+                  )}
                 </div>
               </article>
             </Link>

@@ -18,5 +18,6 @@ export interface Project {
   client_name: string
   category: string
   technologies: string[] | null
+  sort_order?: number
   created_at: string
 }

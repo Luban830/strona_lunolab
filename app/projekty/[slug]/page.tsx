@@ -58,39 +58,32 @@ export default async function ProjectDetailsPage({
       <div className="absolute top-20 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#27F579]/12 via-[#27F579]/5 to-transparent rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-0 w-full h-[220px] bg-gradient-to-t from-[#0a0b0a] to-transparent" />
 
-      <div className="max-w-4xl mx-auto relative z-10">
-        <article className="bg-[#111211]/90 border border-[#27F579]/20 rounded-2xl overflow-hidden shadow-[0_0_30px_rgba(39,245,121,0.08)]">
-          {project.image_url && (
-            <div className="relative h-64 sm:h-80 md:h-96 border-b border-[#27F579]/15">
-              <Image
-                src={project.image_url}
-                alt={project.title}
-                fill
-                className="object-cover"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0b0a]/80 via-transparent to-transparent" />
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* --- HERO SECTION --- */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-16 mt-4">
+
+          {/* LEWA STRONA (Tekst i metadane) */}
+          <div className="order-2 lg:order-1 flex flex-col justify-center">
+            <div>
+              <span className="inline-flex items-center rounded-full border border-[#27F579]/50 bg-[#27F579]/10 px-3 py-1 text-xs sm:text-sm font-semibold text-[#27F579] shadow-[0_0_12px_rgba(39,245,121,0.25)]">
+                {project.category}
+              </span>
             </div>
-          )}
 
-          <div className="p-6 sm:p-8 md:p-10">
-            <span className="inline-flex items-center rounded-full border border-[#27F579]/50 bg-[#27F579]/10 px-3 py-1 text-xs sm:text-sm font-semibold text-[#27F579] shadow-[0_0_12px_rgba(39,245,121,0.25)]">
-              {project.category}
-            </span>
-
-            <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight">
+            <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
               {project.title}
             </h1>
 
-            <p className="mt-3 text-base sm:text-lg text-gray-400">
-              Klient:{' '}
-              <span className="text-white/90 font-medium">{project.client_name}</span>
-            </p>
+            <div className="mt-5 flex flex-wrap items-center gap-4 text-base sm:text-lg text-gray-400">
+              <span className="flex items-center gap-2">
+                Klient: <span className="text-white/90 font-medium">{project.client_name}</span>
+              </span>
+            </div>
 
             {technologies.length > 0 && (
-              <div className="mt-6">
-                <h2 className="text-sm uppercase tracking-wide text-gray-400 mb-3">
-                  Technologie
+              <div className="mt-8">
+                <h2 className="text-xs font-bold uppercase tracking-widest text-[#27F579]/80 mb-3">
+                  Wdrożone technologie
                 </h2>
                 <div className="flex flex-wrap gap-2">
                   {technologies.map((tech) => (
@@ -104,54 +97,71 @@ export default async function ProjectDetailsPage({
                 </div>
               </div>
             )}
-
-            <div className="mt-8 border-t border-white/10 pt-8">
-              {project.content && (
-                <div
-                  className={proseCaseStudyClasses}
-                  dangerouslySetInnerHTML={{ __html: project.content }}
-                />
-              )}
-
-              {project.content_image_1 && (
-                <div className="relative w-full h-80 sm:h-96 my-10 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_20px_rgba(39,245,121,0.08)]">
-                  <Image
-                    src={project.content_image_1}
-                    alt={`${project.title} — ilustracja w treści`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 896px) 100vw, 896px"
-                  />
-                </div>
-              )}
-
-              {project.content_bottom && (
-                <div
-                  className={proseCaseStudyClasses}
-                  dangerouslySetInnerHTML={{ __html: project.content_bottom }}
-                />
-              )}
-
-              {project.content_image_2 && (
-                <div className="relative w-full h-80 sm:h-96 my-10 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_20px_rgba(39,245,121,0.08)]">
-                  <Image
-                    src={project.content_image_2}
-                    alt={`${project.title} — ilustracja na końcu treści`}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 896px) 100vw, 896px"
-                  />
-                </div>
-              )}
-
-              {!project.content &&
-                !project.content_bottom &&
-                !project.content_image_1 &&
-                !project.content_image_2 && (
-                  <p className="text-white/75 leading-relaxed">{project.description}</p>
-                )}
-            </div>
           </div>
+
+          {/* PRAWA STRONA (Kwadratowy lub prostokątny kafel na logo/zdjęcie z object-contain) */}
+          {project.image_url && (
+            <div className="order-1 lg:order-2">
+              <div className="relative w-full aspect-video max-w-[500px] mx-auto lg:ml-auto lg:mr-0 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_40px_rgba(39,245,121,0.12)]">
+                <Image
+                  src={project.image_url}
+                  alt={project.title}
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-tr from-[#27F579]/10 to-transparent pointer-events-none" />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* --- SEKCJA TREŚCI (Tylko czysty tekst i ewentualne fotki w tekście) --- */}
+        <article className="max-w-3xl mx-auto bg-[#111211]/80 backdrop-blur-md border border-[#27F579]/15 rounded-3xl p-6 sm:p-10 md:p-12 shadow-[0_0_30px_rgba(0,0,0,0.5)]">
+          {project.content && (
+            <div
+              className={proseCaseStudyClasses}
+              dangerouslySetInnerHTML={{ __html: project.content }}
+            />
+          )}
+
+          {project.content_image_1 && (
+            <div className="relative w-full h-80 sm:h-96 my-10 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_20px_rgba(39,245,121,0.08)]">
+              <Image
+                src={project.content_image_1}
+                alt={`${project.title} — ilustracja w treści`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
+              />
+            </div>
+          )}
+
+          {project.content_bottom && (
+            <div
+              className={proseCaseStudyClasses}
+              dangerouslySetInnerHTML={{ __html: project.content_bottom }}
+            />
+          )}
+
+          {project.content_image_2 && (
+            <div className="relative w-full h-80 sm:h-96 my-10 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_20px_rgba(39,245,121,0.08)]">
+              <Image
+                src={project.content_image_2}
+                alt={`${project.title} — ilustracja na końcu treści`}
+                fill
+                className="object-cover"
+                sizes="(max-width: 896px) 100vw, 896px"
+              />
+            </div>
+          )}
+
+          {!project.content &&
+            !project.content_bottom &&
+            !project.content_image_1 &&
+            !project.content_image_2 && (
+              <p className="text-white/75 leading-relaxed">{project.description}</p>
+            )}
         </article>
       </div>
     </section>

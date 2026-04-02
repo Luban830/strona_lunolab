@@ -4,7 +4,6 @@ import Services from '@/components/Services'
 import CaseStudies from '@/components/CaseStudies'
 import VideoSection from '@/components/VideoSection'
 import SocialSection from '@/components/SocialSection'
-import Footer from '@/components/Footer'
 import HashScrollHandler from '@/components/HashScrollHandler'
 import SectionDivider from '@/components/SectionDivider'
 import ProcessTimeline from '@/components/ProcessTimeline'
@@ -31,7 +30,6 @@ export default function Home() {
       <CaseStudies />
       <SectionDivider />
       <SocialSection />
-      <Footer />
     </main>
   )
 }
