@@ -70,7 +70,7 @@ export default async function ProjectDetailsPage({
               </span>
             </div>
 
-            <h1 className="mt-6 text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            <h1 className="mt-6 text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-snug">
               {project.title}
             </h1>
 
@@ -102,7 +102,7 @@ export default async function ProjectDetailsPage({
           {/* PRAWA STRONA (Kwadratowy lub prostokątny kafel na logo/zdjęcie z object-contain) */}
           {project.image_url && (
             <div className="order-1 lg:order-2">
-              <div className="relative w-full aspect-video max-w-[500px] mx-auto lg:ml-auto lg:mr-0 rounded-2xl overflow-hidden border border-[#27F579]/20 shadow-[0_0_40px_rgba(39,245,121,0.12)]">
+              <div className="relative w-full aspect-video max-w-[500px] mx-auto lg:ml-auto lg:mr-0 rounded-2xl overflow-hidden border border-[#27F579]/20">
                 <Image
                   src={project.image_url}
                   alt={project.title}
@@ -110,7 +110,6 @@ export default async function ProjectDetailsPage({
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-tr from-[#27F579]/10 to-transparent pointer-events-none" />
               </div>
             </div>
           )}
