@@ -12,14 +12,13 @@ export default function OurApproach() {
         <div className="flex flex-col lg:flex-row items-center gap-8 sm:gap-12 lg:gap-16">
           {/* Left side - Image */}
           <div className="w-full lg:w-1/2 flex justify-center lg:justify-start">
-            <div className="relative w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[650px] aspect-[4/3] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
-              <Image
+            {/* Zmieniamy display flex na kontenerze i używamy klasycznego tagu <img>,
+                co zmusza ten div do absolutnie perfekcyjnego owinięcia grafiki niezależnie od jej proporcji */}
+            <div className="w-full max-w-[500px] sm:max-w-[600px] lg:max-w-[650px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 flex flex-col">
+              <img
                 src="https://pub-7713d4f0b3634fa085d0153341a85fef.r2.dev/DSCF8700.jpg"
                 alt="Nasze podejście do współpracy z klientami - Lunolab automatyzacja AI"
-                fill
-                className="object-cover"
-                unoptimized
-                priority
+                className="w-full h-auto block"
               />
             </div>
           </div>

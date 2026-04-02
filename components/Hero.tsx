@@ -72,16 +72,15 @@ export default function Hero() {
 
           {/* Right side - Image */}
           <div className="w-full lg:w-[45%] flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-[650px] aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
-              <Image
+            <div className="relative w-full max-w-[650px] rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10 flex flex-col">
+              <img
                 src="/1.jpg"
                 alt="Lunolab AI Automation"
-                fill
-                className="object-contain"
+                className="w-full h-auto block"
               />
               {/* Green gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-tr from-[#27F579]/20 via-transparent to-transparent"></div>
-              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0b0a]/60"></div>
+              <div className="absolute inset-0 bg-gradient-to-tr from-[#27F579]/20 via-transparent to-transparent pointer-events-none"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#0a0b0a]/60 pointer-events-none"></div>
             </div>
           </div>
         </div>
