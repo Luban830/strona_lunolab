@@ -4,8 +4,8 @@ export default function Footer() {
   return (
     <footer className="bg-[#0a0b0a] border-t border-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
-        <div className="grid md:grid-cols-3 gap-8 mb-8">
-          <div>
+        <div className="grid md:grid-cols-3 gap-8 mb-8 justify-items-center text-center">
+          <div className="max-w-xs">
             <h3 className="text-2xl font-bold bg-gradient-to-r from-[#27F579] via-[#20c46a] to-[#1a7a4a] bg-clip-text text-transparent mb-4">Lunolab</h3>
             <p className="text-gray-400">
               Automatyzujemy przyszłość z AI. Tworzymy inteligentne rozwiązania
@@ -18,6 +18,7 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-400">
               <li>Email: kontakt@lunolab.pl</li>
               <li>Telefon: +48 538 522 778</li>
+              <li>Telefon: +48 737 488 880</li>
             </ul>
           </div>
 
@@ -37,6 +38,11 @@ export default function Footer() {
               <li>
                 <a href="#video" className="text-gray-400 hover:text-[#27F579] transition-colors" aria-label="Przejdź do sekcji O nas">
                   O nas
+                </a>
+              </li>
+              <li>
+                <a href="/polityka-prywatnosci" className="text-gray-400 hover:text-[#27F579] transition-colors" aria-label="Przejdź do polityki prywatności">
+                  Polityka prywatności
                 </a>
               </li>
             </ul>
